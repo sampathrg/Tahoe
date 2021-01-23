@@ -25,7 +25,7 @@ https://drive.google.com/file/d/1qb1Jr5nAB1pXWGnpP8_yj3KZWAQQu3MO/view?usp=shari
 
 ## Build/Install from Source
 ```
-git clone https://github.com/AnonymousForSC2020/EEIE.git
+git clone https://github.com/zhen-xie/Tahoe.git
 cd Tahoe;
 make Tahoe;
 ```
