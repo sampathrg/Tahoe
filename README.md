@@ -1,4 +1,5 @@
 # &nbsp;Tahoe: Tree Structure-Aware High Performance Inference Engine for Decision Tree Ensemble on GPU
+(this repo will be updated in two days)
 
 Using decision trees for inference on GPU is challenging, because of irregular memory access patterns and imbalance workloads across threads. Tahoe, an tree structure-aware high performance inference engine for decision tree ensemble, rearranges tree nodes to enable effective and coalesced memory accesses, and also rearranges trees, such that trees with similarity structure are efficiently grouped together in memory and assigned to threads in a balanced way. Tahoe introduces a set of inference algorithms, each of which uses shared memory differently and has different implications on reduction overhead. It also introduces performance models to guide the selection of inference algorithms for arbitrary forest and data set with negligible overhead.
 
