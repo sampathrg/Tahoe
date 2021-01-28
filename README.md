@@ -56,10 +56,10 @@ Performance model predicts correctly
 Tahoe brings 8.25x speedup.
 ```
 
-As an example, the following C++ code loads forest and data from files and computes the prediction on GPU:
+## Tahoe also provides a C++ interface to load forest and data from files and computes the prediction on GPU:
 ```C++
 # Setup input forest, dataset, and algorithm, and construct the interface of Tahoe framework
-BaseTahoeTest* pTest = new BaseTahoeTest(argv[1], argv[2], algorithm);
+BaseTahoeTest* pTest = new BaseTahoeTest(argv[1], argv[2]);
 # Launch the inference of tree traversal
 pTest->SetUp();
 # Free resources
