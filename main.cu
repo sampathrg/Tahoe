@@ -7,6 +7,7 @@ int main(int argc,char *argv[])
 	// rows, cols, nan_prob, depth, num_trees, leaf_prob, output, threshold,
 	// global_bias, algo, seed, tolerance
 
+	/*
 	int N_batch = 1;
 	int S_sample = 18;
 	int D_tree = 8;
@@ -27,6 +28,7 @@ int main(int argc,char *argv[])
 	float algorithm3 = D_tree*N_tree*S_node/BW_W_SMEM/N_batch + D_tree*N_tree*S_node/BW_R_SMEM + D_tree*N_tree*S_node/BW_R_COA_GMEM/N_batch + D_tree*N_tree*S_att/BW_R_NCOA_GMEM;
 
 	int algorithm = 0;
+
 	float time = FLT_MAX;
 	if( algorithm0 < time ){
 		algorithm = 1;
@@ -43,17 +45,24 @@ int main(int argc,char *argv[])
 
 	cout << "Performance model choose #" << algorithm << " strategy." << endl;
 
-	printf("%s\n", argv[1]);
+	*/
+
+	if(argc!=3)
+	{
+	    printf("Please use proper inputs: ./Tahoe [Model_Path] [Data_Path];");
+	}
+
+	printf("Model: %s , Data: %s\n", argv[1], argv[2]);
 	//BaseTahoeTest* pTest = new BaseTahoeTest(argv[1], argv[2], 10000, 500, (float)0.0, 8, 8, (float)0.0, output_t::RAW, (float)0.0, (float)0.0, algo_t::NAIVE, 0, (float)1e-3f, strategy_t::SHARED_DATA);
-	BaseTahoeTest* pTest = new BaseTahoeTest(argv[1], argv[2], algorithm);
+	BaseTahoeTest* pTest = new BaseTahoeTest(argv[1], argv[2]);
 	float speedup = 0.0;
 	int best_by_run = pTest->SetUp(speedup);
-	cout << "Enumerate al strategies and choose #" << best_by_run << " strategy." << endl;
-
+	/*
 	if(algorithm==best_by_run)
 		cout<<"Performance model predicts correctly"<<endl;
 	else
 		cout<<"Performance model predicts incorrectly"<<endl;
+	*/
 
 	cout<<"Tahoe brings "<<speedup<<"x speedup."<<endl;
 

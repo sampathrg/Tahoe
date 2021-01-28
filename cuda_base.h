@@ -104,9 +104,9 @@ __global__ void compare_GPU(float* data1, float* data2, int length)
 			flag = false;
 	}
 	if(flag == true)
-		printf("results are correct\n");
+		printf("Results are correct\n");
 	else
-		printf("results are incorrect\n");
+		printf("Results are incorrect\n");
 
 }
 

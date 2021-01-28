@@ -2067,6 +2067,8 @@ void swap_child(int k, int depth, std::vector<float> &values_h, std::vector<floa
   {
 	  int shm_sz = num_trees_ * (sizeof(short)+sizeof(float)) * tree_num_nodes(depth_);
 	  //printf("shared memory is %d\n", params.max_shm);
+	  //printf("shm_sz is %d\n", shm_sz);
+	  //printf("num_trees_ %d tree_num_nodes %d\n", num_trees_, tree_num_nodes(depth_));
 	  if (shm_sz > params.max_shm) {
 	    assert(false && "forest is too large to save in shared memory");
 	  }
@@ -2107,8 +2109,11 @@ void infer_dense_split_forest_adaptive(predict_params params, cudaStream_t strea
   if(adaptive_format_number == 4)
 	trees_per_sm = params.max_shm / ( (sizeof(int)+sizeof(float)) * tree_num_nodes(depth_) );
   //printf("shared memory is %d\n", params.max_shm);
+  //printf("adaptive_format_number is %d\n", adaptive_format_number);
   if (trees_per_sm == 0) {
     assert(false && "single tree is too big to save in shared memory");
+    //printf("single tree is too big to save in shared memory\n");
+    //return;
   }
   int num_blocks = ceildiv(num_trees_, trees_per_sm);
   int shm_sz = 0;

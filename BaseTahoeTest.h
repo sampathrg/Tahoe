@@ -40,12 +40,13 @@ void printf_dense_forest_GPU(dense_forest* f)
 	printf("\n");
 }
 
+int epoch_new = 50;
 
 class BaseTahoeTest
 {
 
 	public:
-	BaseTahoeTest(std::string input_model_file, std::string input_data_file, int algorithm, int num_rows=1000, int num_cols=500, float nan_prob=0.0, int depth=20, int num_trees=10, float leaf_prob=0.0, output_t output=output_t::RAW, float threshold=0.0, float global_bias=0.0, algo_t algo=algo_t::NAIVE, int seed=0, float tolerance=1e-3f, strategy_t strategy=strategy_t::SHARED_DATA)
+	BaseTahoeTest(std::string input_model_file, std::string input_data_file, int algorithm=0, int num_rows=1000, int num_cols=500, float nan_prob=0.0, int depth=20, int num_trees=10, float leaf_prob=0.0, output_t output=output_t::RAW, float threshold=0.0, float global_bias=0.0, algo_t algo=algo_t::NAIVE, int seed=0, float tolerance=1e-3f, strategy_t strategy=strategy_t::SHARED_DATA)
 	{
     	ps.num_rows = num_rows;
     	ps.num_cols = num_cols;
@@ -76,13 +77,13 @@ class BaseTahoeTest
 
     CUDA_CHECK(cudaStreamCreate(&stream));
 
-	printf("Load forest\n");
+	printf("Loading model...\n");
     //generate_forest();
     generate_forest_from_file();
-	printf("Load data\n");
+	printf("Loading data...\n");
     //generate_data();
     generate_data_from_file();
-	printf("Predict on CPU and get standard results...\n");
+	printf("Predict on CPU to get standard results...\n");
     predict_on_cpu();
 	printf("Test on GPU...\n");
     float baseline = predict_on_gpu_dense();
@@ -369,7 +370,7 @@ if(fgets(buf,MAX_LINE,fp))
 if(fgets(buf,MAX_LINE,fp))
     ps.missing = atof(buf);
 
-ps.num_rows = ps.num_rows/128;///////////////////////////////////////////////////////////////MUST BE DELETED!!!!!
+//ps.num_rows = ps.num_rows/128;///////////////////////////////////////////////////////////////MUST BE DELETED!!!!!
     //printf("%d, %d, %f\n", ps.num_rows, ps.num_cols, ps.missing);
 
     // allocate arrays
@@ -557,6 +558,8 @@ void generate_data() {
     predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
 	*/
 
+    int epoch = 5;
+
 	for(int i=0;i<5;i++)
     predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
 
@@ -565,13 +568,13 @@ void generate_data() {
 	struct timeval end;
 	gettimeofday(&start,NULL);
 	cudaDeviceSynchronize();
-	for(int i=0;i<5;i++)
+	for(int i=0;i<epoch;i++)
     predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
 	cudaDeviceSynchronize();
 	gettimeofday(&end,NULL);
 
 	float time_use=(end.tv_sec-start.tv_sec)*1000000+(end.tv_usec-start.tv_usec);
-	printf("time_dense is %f us\n",time_use/ps.num_rows/5);
+	printf("Exec.Time/Sample on FIL (baseline) is %f us\n",time_use/ps.num_rows/epoch);
 
     CUDA_CHECK(cudaPeekAtLastError());
 
@@ -589,7 +592,7 @@ void generate_data() {
 
     // cleanup
     delete forest;
-    return time_use/ps.num_rows/5;
+    return time_use/ps.num_rows/epoch;
   }
 
 
@@ -639,7 +642,6 @@ void generate_data() {
     predict_dense_adaptive(stream, forest, preds_d, data_d, ps.num_rows);
 */
 
-
         int device = 0;
 	cudaDeviceProp dev;
 	cudaGetDeviceProperties(&dev, device);
@@ -654,25 +656,30 @@ void generate_data() {
 
 	if(loop==3)
 	{
-	  int shm_sz = ps.num_trees * (sizeof(char)+sizeof(float)) * tree_num_nodes();
+	  int shm_sz = ps.num_trees * (sizeof(int)+sizeof(float)) * tree_num_nodes();
+	  //printf("max_shm %d\n", max_shm);
+	  //printf("shm_sz %d  num_trees %d tree_num_nodes %d\n", shm_sz, ps.num_trees, tree_num_nodes());
 	  if (shm_sz > max_shm) {
 		acc[loop] = FLT_MAX;
+		printf("Strategy %d is not suitable for this case.\n", loop+1);
 		continue;
 	  }
 	
 	}
 
-	int strategy=loop;
+	if(loop==4)
+	{
+	  int trees_per_sm = max_shm / ( (sizeof(char)+sizeof(float)) * tree_num_nodes() );
+	  if (trees_per_sm == 0) {
+		acc[loop] = FLT_MAX;
+		printf("Strategy %d is not suitable for this case.\n", loop+1);
+		continue;
+	  }
+	
+	}
 
-	if(strategy==0 || strategy==1)
-	{
-		strategy=0;
-	}
-	else
-	{
-		strategy--;
-	}
-	printf("Using strategy %d\n", strategy);
+
+	printf("Using strategy %d\n", loop+1);
 
 	for(int i=0;i<5;i++)
     	predict_dense_adaptive(stream, forest, preds_d, data_d, ps.num_rows);
@@ -681,20 +688,20 @@ void generate_data() {
 	struct timeval end;
 	gettimeofday(&start,NULL);
 	cudaDeviceSynchronize();
-	for(int i=0;i<5;i++)
+	for(int i=0;i<epoch_new;i++)
     predict_dense_adaptive(stream, forest, preds_d, data_d, ps.num_rows);
 	cudaDeviceSynchronize();
 	gettimeofday(&end,NULL);
 
 
 	float time_use=(end.tv_sec-start.tv_sec)*1000000+(end.tv_usec-start.tv_usec);
-	printf("time_dense is %f us\n",time_use/ps.num_rows/5);
+	printf("Exec.Time/Sample on strategy %d is %f us\n", loop+1, time_use/ps.num_rows/epoch_new);
 
 	cudaDeviceSynchronize();
 	compare_GPU<<<1,1,0,stream>>>(preds_d, want_preds_d, ps.num_rows);
 	cudaDeviceSynchronize();
 
-	acc[loop] = time_use/ps.num_rows/5;
+	acc[loop] = time_use/ps.num_rows/epoch_new;
 
 	}
 
