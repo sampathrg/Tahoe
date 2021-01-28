@@ -1,4 +1,4 @@
-# &nbsp;Tahoe: Tree Structure-Aware High Performance Inference Engine for Decision Tree Ensemble on GPU
+# Tahoe: Tree Structure-Aware High Performance Inference Engine for Decision Tree Ensemble on GPU
 Tahoe enables high-performance GPU inference for decision tree ensemble which can be used in high performance computing, advertising systems, medical diagnosis, financial fraud detection, etc.
 
 
