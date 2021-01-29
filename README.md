@@ -8,9 +8,9 @@ Tahoe enables high-performance GPU inference for decision tree ensemble which ca
 ```
 # Take the SVHN data set as an example.
 # Download trained decision tree model
-https://drive.google.com/file/d/1cvKjrYR9PHsvNUrZkDWM4u-CMuWVvSey/view?usp=sharing
+https://drive.google.com/file/d/1Z04IvVIIZdjUGZGIf4CpUQ2Ll06JVVll/view?usp=sharing
 # Download data set
-https://drive.google.com/file/d/1qb1Jr5nAB1pXWGnpP8_yj3KZWAQQu3MO/view?usp=sharing
+https://drive.google.com/file/d/1sqnuc8O9c58qphMHYIaNZSiHdDKV0AMF/view?usp=sharing
 
 # In particular, all 15 trained models and data can be downloaded here (not necessary for testing)
 https://drive.google.com/drive/folders/1S9ohva-P6NPB2GW8E1kkMqpQ-KmLL-E0?usp=sharing
