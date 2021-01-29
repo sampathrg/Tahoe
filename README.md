@@ -10,10 +10,10 @@ https://drive.google.com/file/d/1cvKjrYR9PHsvNUrZkDWM4u-CMuWVvSey/view?usp=shari
 # Download data set
 https://drive.google.com/file/d/1qb1Jr5nAB1pXWGnpP8_yj3KZWAQQu3MO/view?usp=sharing
 
-# In particular, all 15 trained models and data can be downloaded here
+# In particular, all 15 trained models and data can be downloaded here (not necessary for testing)
 https://drive.google.com/drive/folders/1S9ohva-P6NPB2GW8E1kkMqpQ-KmLL-E0?usp=sharing
 
-# If you want to train the model from scratch
+# If you want to train the model from scratch (not necessary for testing)
 Please refer to our another repo: https://github.com/zhen-xie/Decision-tree-ensemble.git
 ```
 
