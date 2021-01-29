@@ -2,7 +2,7 @@
 Tahoe enables high-performance GPU inference for decision tree ensemble which can be used in high performance computing, advertising systems, medical diagnosis, financial fraud detection, etc.
 
 ## The easiest way to test it
-```
+
 # Run the SVHN data set as an example.
 ```
 sh ./run_an_example.sh
