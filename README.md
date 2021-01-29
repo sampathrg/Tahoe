@@ -12,6 +12,9 @@ https://drive.google.com/file/d/1qb1Jr5nAB1pXWGnpP8_yj3KZWAQQu3MO/view?usp=shari
 
 # In particular, all 15 trained models and data can be downloaded here
 https://drive.google.com/drive/folders/1S9ohva-P6NPB2GW8E1kkMqpQ-KmLL-E0?usp=sharing
+
+# If you want to train the model from scratch
+Please refer to our another repo: https://github.com/zhen-xie/Decision-tree-ensemble.git
 ```
 
 ## Build/Install from Source
