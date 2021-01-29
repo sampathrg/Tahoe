@@ -3,12 +3,12 @@ Tahoe enables high-performance GPU inference for decision tree ensemble which ca
 
 ## The easiest way to test it
 
-# Run the SVHN data set as an example.
+## Run the SVHN data set as an example.
 ```
 sh ./run_an_example.sh
 ```
 
-# Run the 15 data set. (a little bit time-consuming)
+## Run the 15 data set. (a little bit time-consuming)
 ```
 sh ./run_all_15_examples.sh
 ```
