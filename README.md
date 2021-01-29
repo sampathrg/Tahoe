@@ -1,6 +1,19 @@
 # Tahoe: Tree Structure-Aware High Performance Inference Engine for Decision Tree Ensemble on GPU
 Tahoe enables high-performance GPU inference for decision tree ensemble which can be used in high performance computing, advertising systems, medical diagnosis, financial fraud detection, etc.
 
+## The easiest way to test it
+```
+# Run the SVHN data set as an example.
+```
+sh ./run_an_example.sh
+```
+
+# Run the 15 data set. (a little bit time-consuming)
+```
+sh ./run_all_15_examples.sh
+```
+
+------------------------------MORE DETAILS FOR TESTING----------------------------------------
 ## Requirement
 - CUDA
 
@@ -23,7 +36,6 @@ Please refer to our another repo: https://github.com/zhen-xie/Decision-tree-ense
 ```
 git clone https://github.com/zhen-xie/Tahoe.git
 cd Tahoe;
-Modify the cub path in the Makefile to the correct path, such as "/home/cc/Tahoe/cub-1.8.0" in our Makefile
 make Tahoe;
 ```
 
