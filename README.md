@@ -13,7 +13,7 @@ sh ./run_an_example.sh
 sh ./run_all_15_examples.sh
 ```
 
-# ------------------------------MORE DETAILS FOR TESTING----------------------------------------
+# ---------------MORE DETAILS FOR TESTING-----------------
 ## Requirement
 - CUDA
 
