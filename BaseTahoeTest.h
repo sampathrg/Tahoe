@@ -96,16 +96,16 @@ class BaseTahoeTest
 	algorithm = 1;
 	time = acc[0];}
     if( acc[1] < time ){
-	algorithm = 1;
+	algorithm = 2;
 	time = acc[1];}
     if( acc[2] < time ){
-	algorithm = 2;
+	algorithm = 3;
 	time = acc[2];}
     if( acc[3] < time ){
-	algorithm = 3;
+	algorithm = 4;
 	time = acc[3];}
     if( acc[4] < time ){
-	algorithm = 4;
+	algorithm = 5;
 	time = acc[4];}
 
     speedup = baseline/time;
