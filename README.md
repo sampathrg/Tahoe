@@ -14,8 +14,9 @@ sh ./run_all_15_examples.sh
 ```
 
 # ---------------MORE DETAILS FOR TESTING-----------------
-## Requirement
-- CUDA
+## Requirement (pass-test)
+- Ubuntu 16.04
+- CUDA 10.1
 
 ## Download trained forest and inference data
 ```
