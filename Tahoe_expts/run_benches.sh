@@ -10,6 +10,6 @@ do
         echo
         MODEL_FILE_NAME=$model_name"_xgb_model_save.json.txt"
         DATA_FILE_NAME=$MODEL_FILE_NAME".test.sampled.txt"
-        ./Tahoe $1/$MODEL_FILE_NAME $1/$batch_size/$DATA_FILE_NAME
+        ../Tahoe $1/$MODEL_FILE_NAME $1/$batch_size/$DATA_FILE_NAME
     done
 done
