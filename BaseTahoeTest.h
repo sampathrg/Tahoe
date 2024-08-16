@@ -67,7 +67,7 @@ public:
     selected_algorithm = algorithm;
   }
 
-  int SetUp(float &speedup)
+  int SetUp(float &speedup, float &bestTime)
   {
 
     float acc[6];
@@ -119,6 +119,7 @@ public:
     }
 
     speedup = baseline / time;
+    bestTime = time;
 
     return algorithm;
   }
@@ -624,12 +625,18 @@ public:
 #endif
 
     cudaDeviceSynchronize();
-    compare_GPU<<<1, 1, 0, stream>>>(preds_d, want_preds_d, ps.num_rows);
+    int32_t *result_d = nullptr;
+    cudaMalloc(&result_d, sizeof(int32_t));
+    compare_GPU<<<1, 1, 0, stream>>>(preds_d, want_preds_d, ps.num_rows, result_d);
     cudaDeviceSynchronize();
-
+    int32_t correct = -1;
+    cudaMemcpy(&correct, result_d, sizeof(int32_t), cudaMemcpyDeviceToHost);
+    cudaFree(result_d);
+    cudaDeviceSynchronize();
+    assert(correct != -1);
     // cleanup
     delete forest;
-    return time_use / ps.num_rows / epoch;
+    return correct ? time_use / ps.num_rows / epoch : -1;
   }
 
   void predict_dense_adaptive(cudaStream_t stream, dense_adaptive_forest *f, float *preds, const float *data,
@@ -733,10 +740,17 @@ public:
       printf("Exec.Time/Sample on strategy %d is %f us\n", loop + 1, time_use / ps.num_rows / epoch_new);
 
       cudaDeviceSynchronize();
-      compare_GPU<<<1, 1, 0, stream>>>(preds_d, want_preds_d, ps.num_rows);
+      int32_t *result_d = nullptr;
+      cudaMalloc(&result_d, sizeof(int32_t));
+      compare_GPU<<<1, 1, 0, stream>>>(preds_d, want_preds_d, ps.num_rows, result_d);
       cudaDeviceSynchronize();
+      int32_t correct = -1;
+      cudaMemcpy(&correct, result_d, sizeof(int32_t), cudaMemcpyDeviceToHost);
+      cudaFree(result_d);
+      cudaDeviceSynchronize();
+      assert(correct != -1);
 
-      acc[loop] = time_use / ps.num_rows / epoch_new;
+      acc[loop] = correct ? time_use / ps.num_rows / epoch_new : FLT_MAX;
     }
 
     // cleanup

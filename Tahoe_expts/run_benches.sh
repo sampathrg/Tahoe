@@ -6,7 +6,7 @@ for model_name in "${MODEL_NAMES[@]}"
 do
     for batch_size in "${BATCH_SIZES[@]}"
     do
-        echo "Running $model_name for batch size $batch_size"
+        echo "******* $model_name $batch_size"
         echo
         MODEL_FILE_NAME=$model_name"_xgb_model_save.json.txt"
         DATA_FILE_NAME=$MODEL_FILE_NAME".test.sampled.txt"
