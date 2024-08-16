@@ -40,7 +40,7 @@ void printf_dense_forest_GPU(dense_forest* f)
 	printf("\n");
 }
 
-int epoch_new = 50;
+int epoch_new = 200;
 
 class BaseTahoeTest
 {
@@ -558,7 +558,7 @@ void generate_data() {
     predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
 	*/
 
-    int epoch = 5;
+    int epoch = 200;
 
 	for(int i=0;i<5;i++)
     predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
@@ -568,9 +568,10 @@ void generate_data() {
 	struct timeval end;
 	gettimeofday(&start,NULL);
 	cudaDeviceSynchronize();
-	for(int i=0;i<epoch;i++)
-    predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
-	cudaDeviceSynchronize();
+	for(int i=0;i<epoch;i++) {
+    		predict_dense(stream, forest, preds_d, data_d, ps.num_rows);
+		cudaDeviceSynchronize();
+	}
 	gettimeofday(&end,NULL);
 
 	float time_use=(end.tv_sec-start.tv_sec)*1000000+(end.tv_usec-start.tv_usec);
@@ -688,9 +689,10 @@ void generate_data() {
 	struct timeval end;
 	gettimeofday(&start,NULL);
 	cudaDeviceSynchronize();
-	for(int i=0;i<epoch_new;i++)
-    predict_dense_adaptive(stream, forest, preds_d, data_d, ps.num_rows);
-	cudaDeviceSynchronize();
+	for(int i=0;i<epoch_new;i++) {
+          predict_dense_adaptive(stream, forest, preds_d, data_d, ps.num_rows);
+	  cudaDeviceSynchronize();
+	}
 	gettimeofday(&end,NULL);
 
 
